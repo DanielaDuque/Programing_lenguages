@@ -210,11 +210,13 @@ if __name__ == "__main__":
 		line = line.replace("\t"," "*4)
 		line = line.replace("\n","")
 		line_result = iterate_line(line,idx_line)
-		tokens_line=  line_result["words"]
-		tokens.extend(tokens_line)
+		if not line_result == None:
+			tokens_line=  line_result["words"]
+			tokens.extend(tokens_line)
+			if(line_result["status"] == 1):
+				break
 		idx_line +=1
-		if(line_result["status"] == 1):
-			break
+		
 	print( "\n".join ([str(x) for x in tokens]) )
 
   
