@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+"""
+Autores:
+
+- Daniela Duque Garcia
+- Valentina bernal buitrago
+- Jhonatan Torres Forero
+
+"""
 import sys
 
 class Token ():
