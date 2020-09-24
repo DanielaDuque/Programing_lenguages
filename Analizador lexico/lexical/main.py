@@ -12,7 +12,7 @@ class Token ():
 
 	def __str__(self):
 		if self.t_type=="ERROR":
-			return ">>>Error léxico(línea:{},posición:{})".format(self.row, self.column)
+			return ">>> Error léxico(línea:{},posición:{})".format(self.row, self.column)
 		if self.lexem==None:
 			return "<{},{},{}>".format(self.t_type, self.row, self.column)
 		else:
