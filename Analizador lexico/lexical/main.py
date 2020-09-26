@@ -59,6 +59,7 @@ characters =  {
 }
 
 reserved_words = (
+	"bool",
     "print",
     "input",
     "id",
