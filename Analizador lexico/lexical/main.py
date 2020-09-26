@@ -220,6 +220,7 @@ if __name__ == "__main__":
 	for line in text:
 		line = line.replace("\t"," "*4)
 		line = line.replace("\n","")
+		line = line + " "
 		line_result = iterate_line(line,idx_line)
 		tokens_line=  line_result["words"]
 		tokens.extend(tokens_line)
