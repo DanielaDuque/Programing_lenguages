@@ -227,7 +227,7 @@ if __name__ == "__main__":
 		if(line_result["status"] == 1):
 			break
 		idx_line +=1
-		
-	print( "\n".join ([str(x) for x in tokens]) )
+	if len (tokens) >0 : 	
+		print( "\n".join ([str(x) for x in tokens]) )
 
   
