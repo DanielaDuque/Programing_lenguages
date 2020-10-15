@@ -133,7 +133,7 @@ def read_letters_numbers(line, index):
 		word += line[index]
 		index += 1
 		if index < l:
-			letter = line[index].isalnum()
+			letter = line[index].isalnum() or line[index]=="_"
 		else:
 			break
 	return (word, index, ini_index)
@@ -189,7 +189,7 @@ def iterate_line(line,idx_line):
 					return line_result
 					
 			# id y palabras reservadas
-			elif line[index].isalpha():
+			elif line[index].isalpha() or line[index] == '_':
 				word, index , ini_index= read_letters_numbers(line, index)
 				if word in reserved_words:
 					token = Token(word,idx_line,ini_index+1)
@@ -220,6 +220,7 @@ if __name__ == "__main__":
 	for line in text:
 		line = line.replace("\t"," "*4)
 		line = line.replace("\n","")
+		line = line.replace("\r","")
 		line = line + " "
 		line_result = iterate_line(line,idx_line)
 		tokens_line=  line_result["words"]
