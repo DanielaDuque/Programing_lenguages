@@ -8,7 +8,7 @@ class Rule ():
     def prediction_set(self,predition_st):
         self.predition_st = predition_st
 
-    def put_prediction_set (terminal):
+    def put_prediction_set (self, terminal):
         self.prediction_set.append(terminal)
     
     def __str__(self):
