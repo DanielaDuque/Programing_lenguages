@@ -1,8 +1,7 @@
 
 
-class rule ():
-    def __init__ (self, not_terminal, rigth_part, predition_st = None):
-        self.not_terminal = not_terminal
+class Rule ():
+    def __init__ (self, rigth_part, predition_st = None):
         self.rigth_part = rigth_part
         self.predition_st = predition_st
 
