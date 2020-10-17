@@ -1,11 +1,11 @@
 
-class Grammar ():
-    def __init__ (self, rules):
+class Grammar:
+    def __init__(self, rules):
         self.rules = rules
         """
             rule = dict ["not_terminal" : Not_terminal]
         """
-    def is_terminal(self,char):
+    def is_terminal(self, char):
         return char in (self.rules.keys())
 
 
