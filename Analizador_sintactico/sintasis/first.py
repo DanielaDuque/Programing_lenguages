@@ -7,7 +7,7 @@ def first (grammar, no_terminal):
             if character == "epsilom":
                 return "epsilom"
             
-            if rule.is_terminal(character) #Si es terminal
+            if rule.is_terminal(character) # Si es terminal
                 return character
             
             else 

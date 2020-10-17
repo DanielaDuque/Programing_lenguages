@@ -8,10 +8,6 @@ class Rule ():
     def prediction_set(self,predition_st):
         self.predition_st = predition_st
     
-    def is_terminal(self,char):
-        terminal_set = []
-        return char in (terminal_set)
-
     def __str__(self):
         return  ",".join(self.rigth_part)
 
