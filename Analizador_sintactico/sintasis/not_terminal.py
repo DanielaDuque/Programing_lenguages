@@ -7,7 +7,12 @@ class Not_terminal():
         self.next = []
 
     def put_first(self, terminal):
-        self.first.append(terminal)
+        if type(terminal) == list:
+            self.first += terminal
+        else:
+            self.first.append(terminal)
+
+        self.first = list(set(self.first))
 
     def put_next(self, terminal):
         self.next.append(terminal)
