@@ -42,7 +42,7 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
                             aux = next_aux(gram, grammar_class, char_seen, r, isterminal, char_inicial ).get(r).next
                             gram.get(char_actual).put_next( aux )
                         else:
-                            gram.get(char_actual).put_next( gram.get(character_next).first )
+                            gram.get(char_actual).put_next( aux )
 
     
     return gram

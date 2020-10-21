@@ -3,9 +3,6 @@ import grammar
 import not_terminal
 from first import first, first_string
 from next import next
-import numpy as np
-import pickle
-import pandas as pd
 
 def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
 
@@ -57,7 +54,6 @@ def main():
         for ru in right_part.rules: # iteracion sobre not_terminal de
             print("<<<<<<<<<>>>")
             print (r, " -> ", ru.right_part, " : ",ru.prediction_set)
-            print(right_part.first, " ", right_part.next)
 
 
 
