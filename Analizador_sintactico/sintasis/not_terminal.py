@@ -15,6 +15,12 @@ class Not_terminal():
 
     def put_next(self, terminal):
         self.next.append(terminal)
+        if type(terminal) == list:
+            self.next += terminal
+        else:
+            self.next.append(terminal)
+
+        self.next = list(set(self.next))
         
     def __str__(self):
         str = ""
@@ -22,3 +28,4 @@ class Not_terminal():
             str += self.not_terminal.upper() + ":\n"
         str += ("  ● " + self.not_terminal + ": ") + ("  ● " + self.not_terminal + ": ").join(map(lambda x: x.__str__() + "\n", self.rules))
         return str
+        
