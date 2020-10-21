@@ -40,7 +40,7 @@ grammarDictionary = {
                      [Rule('stmt_block')]),
     'stmt_block': 
         Not_terminal('stmt_block', 
-                     [Rule('tk_par_der H tk_llave_der'), 
+                     [Rule('tk_llave_izq H tk_llave_der'), 
                       Rule('stmt')]),
     'H': 
         Not_terminal('H', 
