@@ -41,8 +41,7 @@ grammarDictionary = {
     'stmt_block': 
         Not_terminal('stmt_block', 
                      [Rule('tk_par_der H tk_llave_der'), 
-                      Rule('stmt'), 
-                      Rule('e')]),
+                      Rule('stmt')]),
     'H': 
         Not_terminal('H', 
                      [Rule('stmt H'), 
