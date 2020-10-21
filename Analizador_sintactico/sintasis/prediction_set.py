@@ -1,30 +1,31 @@
-
+import rule
+import grammar
+import not_terminal
+from first import first, first_string
+from next import next
+import numpy as np
+import pickle
+import pandas as pd
 
 def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
 
     gram = grammar.rules.copy()
+    with open('prediction_set.txt', 'w') as file:
+        for r, right_part in gram.items():  # regla, y not_terminal
+            for rule in right_part.rules: # iteracion sobre not_terminal de
+                aux_var = first_string(grammar, rule.right_part)
+                if "epsilon" in aux_var:
+                    rule.prediction_set = aux_var + gram.get(r).next
+                    rule.prediction_set.remove("epsilon")
+                else:
+                    rule.prediction_set = aux_var
+                file.write("{} {}\n".format(r, rule.prediction_set))
 
-    for r, right_part in gram.items():  # regla, y not_terminal
-        for rule in right_part.rules: # iteracion sobre not_terminal de 
-            if "epsilon" in rule.first:
-                rule.prediction_set = rule.first + gram.get(r).next
-                print("<<<")
-                print(r," ",rule.right_part, " " ,rule.first, " ", rule.prediction_set)
-                rule.prediction_set.remove("epsilon")
-                print(r," ",rule.right_part, " " ,rule.first, " ", rule.prediction_set)
-            else:
-                print("<<<")
-                rule.prediction_set = rule.first
-                print(r," ",rule.right_part, " " ,rule.first, " ", rule.prediction_set)
     return gram
                 
 
 def main():
-    import rule
-    import grammar
-    import not_terminal
-    from first import first
-    from next import next
+
     # var z := int(papito) +
     # gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("B C"), rule.Rule("bad")]),
     #          "B": not_terminal.Not_terminal("B", [rule.Rule("big C boss"), rule.Rule("epsilon")]),
@@ -36,18 +37,27 @@ def main():
              "C": not_terminal.Not_terminal("C", [rule.Rule("cinco D B"), rule.Rule("epsilon")]),
              "D": not_terminal.Not_terminal("D", [rule.Rule("seis"), rule.Rule("epsilon")])}
 
+    # gram1 = {"S": not_terminal.Not_terminal("S", [rule.Rule("A B C"), rule.Rule("D E")]),
+    #          "A": not_terminal.Not_terminal("A", [rule.Rule("dos B tres"), rule.Rule("epsilon")]),
+    #          "B": not_terminal.Not_terminal("B", [rule.Rule("cuatro C cinco B"), rule.Rule("epsilon")]),
+    #          "C": not_terminal.Not_terminal("C", [rule.Rule("seis A B")]),
+    #          "D": not_terminal.Not_terminal("D", [rule.Rule("uno A E"), rule.Rule("B")]),
+    #          "E": not_terminal.Not_terminal("E", [rule.Rule("tres")])}
 
 
-    grammar = grammar.Grammar(gram1)
+
+    grammar_1 = grammar.Grammar(gram1)
     
-    grammar.rules = first(grammar).copy()
+    grammar_1.rules = first(grammar_1).copy()
 
-    grammar.rules = next (grammar).copy()
-    grammar = prediction_set(grammar).copy()
+    grammar_1.rules = next (grammar_1).copy()
+    gramm= prediction_set(grammar_1).copy()
 
-    for r, right_part in grammar.items():  # regla, y not_terminal
-        for rule in right_part.rules: # iteracion sobre not_terminal de 
-            print (r, " -> ", rule.right_part, " : ",rule.prediction_set)
+    for r, right_part in gramm.items():  # regla, y not_terminal
+        for ru in right_part.rules: # iteracion sobre not_terminal de
+            print("<<<<<<<<<>>>")
+            print (r, " -> ", ru.right_part, " : ",ru.prediction_set)
+            print(right_part.first, " ", right_part.next)
 
 
 
