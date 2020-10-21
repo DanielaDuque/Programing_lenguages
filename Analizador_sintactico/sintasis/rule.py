@@ -1,5 +1,3 @@
-
-
 class Rule:
     def __init__ (self, right_part):
         self.right_part = right_part.split()# Array de string
@@ -21,6 +19,4 @@ class Rule:
         self.prediction_set.append(terminal)
     
     def __str__(self):
-        return ",".join(self.right_part)
-
-
+        return " ".join(self.right_part)
