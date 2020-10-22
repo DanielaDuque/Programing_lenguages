@@ -14,12 +14,13 @@ class Not_terminal():
         self.first = list(set(self.first))
 
     def put_next(self, terminal):
-        self.next.append(terminal)
+        # self.next.append(terminal)
         if type(terminal) == list:
             self.next += terminal
         else:
+            # print("entra")
             self.next.append(terminal)
-
+        # print(type(self.next), self.next)
         self.next = list(set(self.next))
         
     def __str__(self):

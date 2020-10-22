@@ -19,79 +19,60 @@ def first_string(grammar, beta):
 
     return list(set(first_array))
 
-def first(grammar):
-    gram = grammar.rules.copy()
-
-    for r, right_part in grammar.rules.items():  # regla, y not_terminal
-        if len(gram.get(r).first):  # si ya tiene elementos en first y epsilon no esta
-            continue
-
-        for value in right_part.rules:  # iteracion sobre not_terminal de r
-            li = []
-            for i in range(len(value.right_part)):  # iteracion sobre caracteres de la regla
-                character = value.right_part[i]  # caracter i-esimo
-
-                if not grammar.is_terminal(character):  # Si es terminal se agrega directamente y hace break
-                    gram.get(r).put_first(character)
-                    break
-
-                else:  # si es no terminal
-
-                    def recursion(char, ac):  # funcion recursiva para obtener los no terminales
-
-                        if not grammar.is_terminal(char):
-                            return char
-
-                        if char == r or (char == character and ac != 0) :  # para salir si es circular
-                            return
-
-                        for value in grammar.rules[char].rules: # iteracion sobre las reglas de char
-                            for i in range(len(value.right_part)):
-                                 # print(char, " ", value, " ", value.right_part, " ", i)
-                                 val = recursion(value.right_part[i], ac+1)
-                                 if val:
-                                    # print(val)
-                                    gram.get(character).put_first(val)
-                                    gram.get(char).put_first(val)
-                                    # print(grammar.rules["B"].first)
-                                    if not val == "epsilon":
-                                        # print("BREAK")
-                                        break
-
-                    if not len(gram.get(character).first):  # se verifica si character ya tiene first
-                        recursion(character, 0)
 
 
-                    aux = gram.get(character).first
-                    gram.get(r).put_first(aux)  # se agrega los first de character en r
-                    # print(r, " ", aux, " ", value)
-                    if not "epsilon" in gram.get(r).first:  # si epsilon no esta en la lista
+def first_aux(gram, terminal):
+    li_glob = []
+    seen = []
+
+    def rec(char, ac, before):
+        # print(li)
+        if not gram.is_terminal(char): # si es terminal
+            if char not in li_glob: # si no esta en primeros
+                # print(seen)
+                li_glob.append(char)
+            seen[:] = seen[:-1]
+            return
+
+        if ac and char == terminal: # si vuelve al primer terminal
+            return
+
+        for value_1 in gram.rules[char].rules: # recorre las reglas del terminal char (A)
+            if value_1 == before: # si la regla anterior es la misma que estamos mirando no la revise
+                continue
+            for i in range(len(value_1.right_part)): # recorre los elementos de la regla (alfa_i)
+                if value_1.right_part[i] not in seen:
+                    seen.append(value_1.right_part[i])
+                    rec(value_1.right_part[i], 1, value_1) #calcula first de alfa_i
+                    seen[:] = seen[:-1]
+
+                    if "epsilon" not in li_glob: # si epsilon no esta en los first de alfa_i, pase a otra regla
                         break
-                    else:
-                        if not i == len(value.right_part):  # si estamos en el ultimo caracter de la lista y toca quitar epsilon
-                            gram.get(r).first.remove("epsilon")
 
-    return gram
-
-def __main__ ():
-    # gram1 = {"A": [rule.Rule("C"), rule.Rule("masssssss")], "B": [rule.Rule("ma")], "C": [rule.Rule("B"), rule.Rule("oso")]}
-    # gram1 = {"A": [rule.Rule("B C"), rule.Rule("bad")], "B": [rule.Rule("big C boss"), rule.Rule("bet")],
-    #          "C": [rule.Rule("cat"), rule.Rule("cow")]}
+                    if i < len(value_1.right_part)-1: # si epsilon esta en first de char y no es el ultimo terminal
+                        li_glob.remove("epsilon") #quitar epsilon
+                else:
+                    return
 
 
-    gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("B C"), rule.Rule("bad")]),
-             "B": not_terminal.Not_terminal("B", [rule.Rule("C boss"), rule.Rule("epsilon")]),
-             "C": not_terminal.Not_terminal("C", [rule.Rule("cat"), rule.Rule("cow")])}
-
-    # gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("B"), rule.Rule("bad")]), "B": not_terminal.Not_terminal("B", [rule.Rule("A")])}
+    rec(terminal, 0, "")
+    return li_glob
 
 
-    # gram1 = {"S": not_terminal.Not_terminal("S", [rule.Rule("A B C"), rule.Rule("D E")]),
-    #          "A": not_terminal.Not_terminal("A", [rule.Rule("dos B tres"), rule.Rule("epsilon")]),
-    #          "B": not_terminal.Not_terminal("B", [rule.Rule("cuatro C cinco B"), rule.Rule("epsilon")]),
-    #          "C": not_terminal.Not_terminal("C", [rule.Rule("seis A B")]),
-    #          "D": not_terminal.Not_terminal("D", [rule.Rule("uno A E"), rule.Rule("B")]),
-    #          "E": not_terminal.Not_terminal("E", [rule.Rule("tres")])}
+
+def first(gram):
+    gramm = gram.rules.copy()
+    for key in gram.rules.keys():
+        gramm[key].first = first_aux(gram, key)
+
+    return gramm
+
+
+
+def main():
+    # gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("B C"), rule.Rule("bad")]),
+    #          "B": not_terminal.Not_terminal("B", [rule.Rule("big C boss"), rule.Rule("epsilon")]),
+    #          "C": not_terminal.Not_terminal("C", [rule.Rule("cat"), rule.Rule("cow")])}
 
     # gram1 = {"S": not_terminal.Not_terminal("S", [rule.Rule("A uno B C"), rule.Rule("S dos")]),
     #          "A": not_terminal.Not_terminal("A", [rule.Rule("B C D"), rule.Rule("A tres"), rule.Rule("epsilon")]),
@@ -99,17 +80,28 @@ def __main__ ():
     #          "C": not_terminal.Not_terminal("C", [rule.Rule("cinco D B"), rule.Rule("epsilon")]),
     #          "D": not_terminal.Not_terminal("D", [rule.Rule("seis"), rule.Rule("epsilon")])}
 
+    # gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("ant C"), rule.Rule("B")]),
+    #          "B": not_terminal.Not_terminal("B", [rule.Rule("cat C"), rule.Rule("C")]),
+    #          "C": not_terminal.Not_terminal("C", [rule.Rule("D fat"), rule.Rule("D")]),
+    #          "D": not_terminal.Not_terminal("D", [rule.Rule("B")])}
+
+    # gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("ant C"), rule.Rule("B")]),
+    #          "B": not_terminal.Not_terminal("B", [rule.Rule("cat C"), rule.Rule("C")]),
+    #          "C": not_terminal.Not_terminal("C", [rule.Rule("fat D"), rule.Rule("D")]),
+    #          "D": not_terminal.Not_terminal("D", [rule.Rule("B")])}
+
     gramar = grammar.Grammar(gram1)
 
-    gramar = first(gramar)
+    # gramar = first(gramar) IMPORTANTE
+    # first(gramar)
+    # print(first_aux(gramar, "S"))
+    first(gramar)
+
 
     # print(gramar["S"].first, gramar["A"].first, gramar["B"].first, gramar["C"].first, gramar["D"].first)
-    for key, value in gramar.items():
-        print(key, " ", value.first)
+    # for key, value in gramar.items():
+    #     print(key, " ", value.first)
     # print(gramar["A"].rules[0].first)
-    return
 
-
-if __name__ == "__main__":
-    __main__()
-
+if __name__ == '__main__':
+    main()

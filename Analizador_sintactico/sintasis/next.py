@@ -3,10 +3,13 @@ import grammar
 import not_terminal
 import first
 
-def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_inicial):  # funcion recursiva para obtener los no terminales
+seen = []
 
+def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_inicial):  # funcion recursiva para obtener los no terminales
+    # print(char_actual)
     gram = grammar.copy()
 
+    # seen.append(char_actual)
     if char_actual == char_inicial: #signo inicial tiene siempre $
         gram.get(char_actual).put_next("$")
 
@@ -15,36 +18,57 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
             for i in range(len(rule.right_part)): # iteracion sobre caracteres de la regla
                 character = rule.right_part[i]
                 if character == char_actual: # Confirma que sea l no tereminal ara el cual se calcula next
-
+                    # print(char_actual)
                     if i+1==len(rule.right_part): # Si es el ultimo de la regla
-                        char_seen +=[r]
-                        if character == r:
+                        # print("ultimo ", r)
+
+                        if character == r or r in seen:
+                            # print("continue")
+                            # print("seen")
                             continue
-                        aux = next_aux(gram, grammar_class, char_seen, r, isterminal,char_inicial).get(r).next # next(regla)
-                        gram.get(char_actual).put_next( aux )
+                        elif not len(right_part.next):
+                            seen.append(r)
+                            # print(r, " ", char_actual)
+                            # print("no visto: ")
+                            aux = next_aux(gram, grammar_class, char_seen, r, isterminal,char_inicial).get(r).next # next(regla)
+                            # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                            # print("actual ", char_actual, " aux ", aux)
+                            gram.get(char_actual).put_next( aux )
+                            seen.remove(r)
+                        else:
+                            # print("ya vi: ", right_part.next)
+                            gram.get(char_actual).put_next(right_part.next)
+                        # print("pasa")
                     else:
+                        # print("no_ultimo")
                         aux_var = first.first_string(grammar_class, rule.right_part[i+1:])
                         character_next = rule.right_part[i+1] #Caracter siguiente
                         if not isterminal(character_next): # Si es terminal 
                             gram.get(char_actual).put_next(character_next)
 
-                        elif character_next in char_seen :  # para salir si es circular
+                        elif r in seen :  # para salir si es circular
                             continue
                             # if char_actual == char_inicial:
                             #     gram.get(char_actual).put_next(gram.get(character_next).first)
 
                         elif "epsilon" in aux_var: # si primeros de beta tiene epsilon
-                            char_seen +=[r]
+
                             gram.get(char_actual).put_next( aux_var )
                             gram.get(char_actual).next.remove("epsilon")
-                            if character == r:
+                            if character == r or r in seen:
                                 continue
-                            aux = next_aux(gram, grammar_class, char_seen, r, isterminal, char_inicial ).get(r).next
-                            gram.get(char_actual).put_next( aux )
-                        else:
-                            gram.get(char_actual).put_next( aux )
 
-    
+                            if len(right_part.next) != 0:
+                                seen.append(r)
+                                aux = next_aux(gram, grammar_class, char_seen, r, isterminal, char_inicial ).get(r).next
+                                gram.get(char_actual).put_next( aux )
+                                seen.remove(r)
+                            else:
+                                gram.get(char_actual).put_next(right_part.next)
+                        else:
+                            gram.get(char_actual).put_next( aux_var )
+
+    # seen.remove(char_actual)
     return gram
                 
 def next (grammar):
@@ -53,7 +77,9 @@ def next (grammar):
     char_ini = not_ter[0]
     for not_te_aux in not_ter:
         if len(gramm[not_te_aux].next)==0:
+            # print(not_te_aux)
             gramm = next_aux(gramm, grammar, [], not_te_aux, lambda x: grammar.is_terminal(x), char_ini )
+            seen[:] = []
     return gramm
 
 
@@ -115,12 +141,23 @@ def main():
     #          "C": not_terminal.Not_terminal("C", [rule.Rule("cinco D B"), rule.Rule("epsilon")]),
     #          "D": not_terminal.Not_terminal("D", [rule.Rule("seis"), rule.Rule("epsilon")])}
 
-    gram1 = {"S": not_terminal.Not_terminal("S", [rule.Rule("A B C"), rule.Rule("D E")]),
-             "A": not_terminal.Not_terminal("A", [rule.Rule("dos B tres"), rule.Rule("epsilon")]),
-             "B": not_terminal.Not_terminal("B", [rule.Rule("cuatro C cinco B"), rule.Rule("epsilon")]),
-             "C": not_terminal.Not_terminal("C", [rule.Rule("seis A B")]),
-             "D": not_terminal.Not_terminal("D", [rule.Rule("uno A E"), rule.Rule("B")]),
-             "E": not_terminal.Not_terminal("E", [rule.Rule("tres")])}
+    # gram1 = {"S": not_terminal.Not_terminal("S", [rule.Rule("A B C"), rule.Rule("D E")]),
+    #          "A": not_terminal.Not_terminal("A", [rule.Rule("dos B tres"), rule.Rule("epsilon")]),
+    #          "B": not_terminal.Not_terminal("B", [rule.Rule("cuatro C cinco B"), rule.Rule("epsilon")]),
+    #          "C": not_terminal.Not_terminal("C", [rule.Rule("seis A B")]),
+    #          "D": not_terminal.Not_terminal("D", [rule.Rule("uno A E"), rule.Rule("B")]),
+    #          "E": not_terminal.Not_terminal("E", [rule.Rule("tres")])}
+
+    # gram1 = {"S": not_terminal.Not_terminal("S", [rule.Rule("A uno B C"), rule.Rule("S dos")]),
+    #          "A": not_terminal.Not_terminal("A", [rule.Rule("B C D"), rule.Rule("A tres"), rule.Rule("epsilon")]),
+    #          "B": not_terminal.Not_terminal("B", [rule.Rule("D cuatro C tres"), rule.Rule("epsilon")]),
+    #          "C": not_terminal.Not_terminal("C", [rule.Rule("cinco D B"), rule.Rule("epsilon")]),
+    #          "D": not_terminal.Not_terminal("D", [rule.Rule("seis"), rule.Rule("epsilon")])}
+
+    gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("ant C"), rule.Rule("B")]),
+             "B": not_terminal.Not_terminal("B", [rule.Rule("C dog"), rule.Rule("cat C")]),
+             "C": not_terminal.Not_terminal("C", [rule.Rule("fat D"), rule.Rule("D")]),
+             "D": not_terminal.Not_terminal("D", [rule.Rule("B")])}
 
 
     gramar = grammar.Grammar(gram1)

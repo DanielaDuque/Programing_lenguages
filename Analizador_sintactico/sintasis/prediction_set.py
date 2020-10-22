@@ -17,6 +17,9 @@ def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
                 else:
                     rule.prediction_set = aux_var
                 file.write("{} {}\n".format(r, rule.prediction_set))
+                rule.prediction_set.sort()
+
+
 
     return gram
                 
