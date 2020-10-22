@@ -3,6 +3,7 @@ import grammar
 import not_terminal
 from first import first, first_string
 from next import next
+from grammar_definition import grammarDictionary
 
 def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
 
@@ -16,8 +17,9 @@ def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
                     rule.prediction_set.remove("epsilon")
                 else:
                     rule.prediction_set = aux_var
-                file.write("{} {}\n".format(r, rule.prediction_set))
                 rule.prediction_set.sort()
+                file.write("{} {}\n".format(r, rule.prediction_set))
+
 
 
 
@@ -46,12 +48,14 @@ def main():
 
 
 
-    grammar_1 = grammar.Grammar(gram1)
+    grammar_1 = grammar.Grammar(grammarDictionary)
     
     grammar_1.rules = first(grammar_1).copy()
 
     grammar_1.rules = next (grammar_1).copy()
     gramm= prediction_set(grammar_1).copy()
+
+    # print(gramm["main_prog"].first)
 
     for r, right_part in gramm.items():  # regla, y not_terminal
         for ru in right_part.rules: # iteracion sobre not_terminal de

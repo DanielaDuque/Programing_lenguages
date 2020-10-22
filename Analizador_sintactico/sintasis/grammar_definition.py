@@ -1,6 +1,6 @@
-import not_terminal
+from not_terminal import Not_terminal
 import grammar
-import rule
+from rule import Rule
 grammarDictionary = {
     'prog': 
         Not_terminal('prog', 
@@ -8,18 +8,18 @@ grammarDictionary = {
     'A': 
         Not_terminal('A', 
                      [Rule('fn_decl_list A'), 
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'main_prog': 
         Not_terminal('main_prog', 
                      [Rule('G B end')]),
     'G': 
         Not_terminal('G', 
                      [Rule('var var_decl tk_puntoycoma'), 
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'B': 
         Not_terminal('B', 
                      [Rule('stmt B'), 
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'fn_decl_list': 
         Not_terminal('fn_decl_list', 
                      [Rule('function fid tk_dospuntos C tk_par_izq D tk_par_der E F')]),
@@ -30,11 +30,11 @@ grammarDictionary = {
     'D': 
         Not_terminal('D', 
                      [Rule('var_decl'), 
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'E': 
         Not_terminal('E', 
                      [Rule('var var_decl tk_puntoycoma'), 
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'F': 
         Not_terminal('F', 
                      [Rule('stmt_block')]),
@@ -45,14 +45,14 @@ grammarDictionary = {
     'H': 
         Not_terminal('H', 
                      [Rule('stmt H'), 
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'var_decl': 
         Not_terminal('var_decl', 
                      [Rule('id tk_dospuntos C I')]),
     'I': 
         Not_terminal('I', 
                      [Rule('tk_coma id tk_dospuntos C I'), 
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'stmt': 
         Not_terminal('stmt', 
                      [Rule('print lexpr tk_puntoycoma'),
@@ -65,15 +65,15 @@ grammarDictionary = {
                       Rule('until tk_par_izq lexpr tk_par_der do stmt_block'), 
                       Rule('loop stmt_block'), 
                       Rule('do stmt_block L'), 
-                      Rule('repeat num tk_dospuntos stmt_block'), 
+                      Rule('repeat tk_num tk_dospuntos stmt_block'),
                       Rule('for tk_par_izq lexpr tk_puntoycoma lexpr tk_puntoycoma lexpr tk_par_der do stmt_block'), 
                       Rule('next tk_puntoycoma'), 
                       Rule('break tk_puntoycoma'), 
                       Rule('tk_decremento id tk_puntoycoma'), 
                       Rule('tk_incremento id tk_puntoycoma'), 
                       Rule('id K tk_puntoycoma')]),
-    'L': 
-        Not_terminal('L', 
+    'K':
+        Not_terminal('K',
                       [Rule('tk_asignacion lexp'),
                        Rule('tk_sum_asig lexpr'),
                        Rule('tk_res_asig lexpr'),
@@ -97,22 +97,22 @@ grammarDictionary = {
         Not_terminal('M', 
                      [Rule('N'),
                       Rule('O'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'N': 
         Not_terminal('N', 
                      [Rule('and nexpr N'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'O': 
         Not_terminal('O', 
                      [Rule('or nexpr O'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'rexpr': 
         Not_terminal('rexpr', 
                      [Rule('simple_expr P')]),
     'P': 
         Not_terminal('P', 
                      [Rule('Q simple_expr'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'Q': 
         Not_terminal('Q', 
                      [Rule('tk_menor'),
@@ -128,14 +128,14 @@ grammarDictionary = {
         Not_terminal('R', 
                      [Rule('tk_mas term R'),
                       Rule('tk_menos term R'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'term': 
         Not_terminal('term', 
                      [Rule('factor S')]),
     'S': 
         Not_terminal('S', 
                      [Rule('T factor S'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'T': 
         Not_terminal('T', 
                      [Rule('tk_mul'),
@@ -143,8 +143,9 @@ grammarDictionary = {
                       Rule('tk_mod')]),
     'factor': 
         Not_terminal('factor', 
-                     [Rule('num'),
-                      Rule('bool'),
+                     [Rule('tk_num'),
+                      Rule('true'),
+                      Rule('false'),
                       Rule('id U'),
                       Rule('tk_incremento id'),
                       Rule('tk_decremento id'),
@@ -154,15 +155,15 @@ grammarDictionary = {
         Not_terminal('U', 
                      [Rule('tk_incremento'),
                       Rule('tk_decremento'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'V': 
         Not_terminal('V', 
                      [Rule('lexpr W'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
     'W': 
         Not_terminal('W', 
                      [Rule('tk_coma lexpr W'),
-                      Rule('e')]),
+                      Rule('epsilon')]),
 }
-grammar = Grammar(grammarDictionary)
-print(grammar)
+# grammar = Grammar(grammarDictionary)
+# print(grammar)
