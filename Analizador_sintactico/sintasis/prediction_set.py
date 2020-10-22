@@ -4,21 +4,24 @@ import not_terminal
 from first import first, first_string
 from next import next
 from grammar_definition import grammarDictionary
+import pickle
 
 def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
 
     gram = grammar.rules.copy()
-    with open('prediction_set.txt', 'w') as file:
-        for r, right_part in gram.items():  # regla, y not_terminal
-            for rule in right_part.rules: # iteracion sobre not_terminal de
-                aux_var = first_string(grammar, rule.right_part)
-                if "epsilon" in aux_var:
-                    rule.prediction_set = aux_var + gram.get(r).next
-                    rule.prediction_set.remove("epsilon")
-                else:
-                    rule.prediction_set = aux_var
-                rule.prediction_set.sort()
-                file.write("{} {}\n".format(r, rule.prediction_set))
+    for r, right_part in gram.items():  # regla, y not_terminal
+        for rule in right_part.rules: # iteracion sobre not_terminal de
+            aux_var = first_string(grammar, rule.right_part)
+            if "epsilon" in aux_var:
+                rule.prediction_set = aux_var + gram.get(r).next
+                rule.prediction_set.remove("epsilon")
+            else:
+                rule.prediction_set = aux_var
+            rule.prediction_set.sort()
+
+
+    filehandler = open(b"predition_set.obj", "wb")
+    pickle.dump(gram, filehandler)
 
 
 
