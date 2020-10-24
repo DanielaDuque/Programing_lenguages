@@ -2,7 +2,7 @@ import rule
 import grammar
 import not_terminal
 import first
-
+from grammar_definition import grammarDictionary
 seen = []
 
 def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_inicial):  # funcion recursiva para obtener los no terminales
@@ -18,7 +18,7 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
             for i in range(len(rule.right_part)): # iteracion sobre caracteres de la regla
                 character = rule.right_part[i]
                 if character == char_actual: # Confirma que sea l no tereminal ara el cual se calcula next
-                    # print(char_actual)
+                    # print("hola ",char_actual)
                     if i+1==len(rule.right_part): # Si es el ultimo de la regla
                         # print("ultimo ", r)
 
@@ -57,13 +57,16 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
                             gram.get(char_actual).next.remove("epsilon")
                             if character == r or r in seen:
                                 continue
-
-                            if len(right_part.next) != 0:
+                            # print(">>>",right_part.not_terminal, " ",rule.right_part, " ",right_part.next )
+                            
+                            if len(right_part.next) == 0:
+                                # print( "recursion")
                                 seen.append(r)
                                 aux = next_aux(gram, grammar_class, char_seen, r, isterminal, char_inicial ).get(r).next
                                 gram.get(char_actual).put_next( aux )
                                 seen.remove(r)
                             else:
+                                # print("No recursion")
                                 gram.get(char_actual).put_next(right_part.next)
                         else:
                             gram.get(char_actual).put_next( aux_var )
@@ -84,6 +87,16 @@ def next (grammar):
 
 
 def main():
+
+    gramar = grammar.Grammar(grammarDictionary)
+
+    gramar.rules = first.first(gramar).copy()
+    # gra = next(gramar)
+    gra = next_aux(gramar.rules, gramar, [], "S", lambda x: gramar.is_terminal(x), "prog" )
+
+    print(gra["S"].next)
+    # for key, value in gra.items():
+    #     print(key, " ", value.next)
 
     # from first import first, first_string
 
@@ -154,19 +167,13 @@ def main():
     #          "C": not_terminal.Not_terminal("C", [rule.Rule("cinco D B"), rule.Rule("epsilon")]),
     #          "D": not_terminal.Not_terminal("D", [rule.Rule("seis"), rule.Rule("epsilon")])}
 
-    gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("ant C"), rule.Rule("B")]),
-             "B": not_terminal.Not_terminal("B", [rule.Rule("C dog"), rule.Rule("cat C")]),
-             "C": not_terminal.Not_terminal("C", [rule.Rule("fat D"), rule.Rule("D")]),
-             "D": not_terminal.Not_terminal("D", [rule.Rule("B")])}
+    # gram1 = {"A": not_terminal.Not_terminal("A", [rule.Rule("ant C"), rule.Rule("B")]),
+    #          "B": not_terminal.Not_terminal("B", [rule.Rule("C dog"), rule.Rule("cat C")]),
+    #          "C": not_terminal.Not_terminal("C", [rule.Rule("fat D"), rule.Rule("D")]),
+    #          "D": not_terminal.Not_terminal("D", [rule.Rule("B")])}
 
 
-    gramar = grammar.Grammar(gram1)
-
-    gramar.rules = first.first(gramar).copy()
-    gra = next(gramar)
-
-    for key, value in gra.items():
-        print(key, " ", value.next)
+    
 
     # print(gramar["S"].first, gramar["A"].first, gramar["B"].first, gramar["C"].first, gramar["D"].first)
     # print(gramar["D"].rules[1].first)

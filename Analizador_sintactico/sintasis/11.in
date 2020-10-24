@@ -1,0 +1,6 @@
+loop{
+    repeat 10:
+    {    print(100);
+
+}
+

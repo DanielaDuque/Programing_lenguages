@@ -60,7 +60,7 @@ grammarDictionary = {
                      [Rule('print lexpr tk_puntoycoma'),
                       Rule('input id tk_puntoycoma'), 
                       Rule('when tk_par_izq lexpr tk_par_der do stmt_block'), 
-                      Rule('if tk_par_izq lexpr tk_par_der do stmt_block TK_else stmt_block'),
+                      Rule('if tk_par_izq lexpr tk_par_der do stmt_block else stmt_block'),
                       Rule('unless tk_par_izq lexpr tk_par_der do stmt_block'),
                       Rule('while tk_par_izq lexpr tk_par_der do stmt_block'),
                       Rule('return lexpr tk_puntoycoma'), 
@@ -76,7 +76,7 @@ grammarDictionary = {
                       Rule('id K tk_puntoycoma')]),
     'K':
         Not_terminal('K',
-                      [Rule('tk_asignacion lexp'),
+                      [Rule('tk_asignacion lexpr'),
                        Rule('tk_sum_asig lexpr'),
                        Rule('tk_res_asig lexpr'),
                        Rule('tk_mul_asig lexpr'),
