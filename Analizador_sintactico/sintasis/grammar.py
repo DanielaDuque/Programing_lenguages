@@ -1,6 +1,6 @@
 class Grammar:
-    def __init__(self, rules):
-        self.rules = rules
+    def __init__(self, nonterminals):
+        self.rules = nonterminals
         """
             rule = dict ["not_terminal" : Not_terminal]
         """

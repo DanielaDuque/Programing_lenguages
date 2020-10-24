@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+
 from not_terminal import Not_terminal
-import grammar
+from grammar import Grammar
 from rule import Rule
 grammarDictionary = {
     'prog': 
@@ -165,5 +167,6 @@ grammarDictionary = {
                      [Rule('tk_coma lexpr W'),
                       Rule('epsilon')]),
 }
-# grammar = Grammar(grammarDictionary)
-# print(grammar)
+if __name__ == "__main__":
+    grammar = Grammar(grammarDictionary)
+    print(grammar)

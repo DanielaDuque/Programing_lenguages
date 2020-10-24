@@ -93,45 +93,6 @@ def main():
     #          "C": not_terminal.Not_terminal("C", [rule.Rule("fat D"), rule.Rule("D")]),
     #          "D": not_terminal.Not_terminal("D", [rule.Rule("B")])}
 
-    gram1 = {
-    'prog':
-        Not_terminal('prog',
-                     [Rule('A main_prog')]),
-    'A':
-        Not_terminal('A',
-                     [Rule('fn_decl_list A'),
-                      Rule('epsilon')]),
-    'main_prog':
-        not_terminal.Not_terminal('main_prog',
-                     [rule.Rule('G B end')]),
-    'G':
-        not_terminal.Not_terminal('G',
-                     [rule.Rule('var var_decl tk_puntoycoma'),
-                      rule.Rule('epsilon')]),
-    'B':
-        not_terminal.Not_terminal('B',
-                     [rule.Rule('stmt B'),
-                      rule.Rule('epsilon')]),
-    'stmt':
-        Not_terminal('stmt',
-                     [Rule('print lexpr tk_puntoycoma'),
-                      Rule('input id tk_puntoycoma'),
-                      Rule('when tk_par_izq lexpr tk_par_der do stmt_block'),
-                      Rule('if tk_par_izq lexpr tk_par_der do stmt_block TK_else stmt_block'),
-                      Rule('unless tk_par_izq lexpr tk_par_der do stmt_block'),
-                      Rule('while tk_par_izq lexpr tk_par_der do stmt_block'),
-                      Rule('return lexpr tk_puntoycoma'),
-                      Rule('until tk_par_izq lexpr tk_par_der do stmt_block'),
-                      Rule('loop stmt_block'),
-                      Rule('do stmt_block L'),
-                      Rule('repeat num tk_dospuntos stmt_block'),
-                      Rule('for tk_par_izq lexpr tk_puntoycoma lexpr tk_puntoycoma lexpr tk_par_der do stmt_block'),
-                      Rule('next tk_puntoycoma'),
-                      Rule('break tk_puntoycoma'),
-                      Rule('tk_decremento id tk_puntoycoma'),
-                      Rule('tk_incremento id tk_puntoycoma'),
-                      Rule('id K tk_puntoycoma')])}
-
     gramar = grammar.Grammar(gram1)
 
     # gramar = first(gramar) IMPORTANTE

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Not_terminal():
     def __init__(self, not_terminal, rules):
         self.not_terminal = not_terminal
@@ -27,6 +28,6 @@ class Not_terminal():
         str = ""
         if len(self.not_terminal) > 1:
             str += self.not_terminal.upper() + ":\n"
-        str += ("  ● " + self.not_terminal + " -> ") + ("  ● " + self.not_terminal + " -> ").join(map(lambda x: x.__str__() + "\n", self.rules))
+        str += ("  * " + self.not_terminal + " -> ") + ("  * " + self.not_terminal + " -> ").join(map(lambda x: x.__str__() + "\n", self.rules))
         return str
         

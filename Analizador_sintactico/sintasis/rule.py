@@ -19,4 +19,4 @@ class Rule:
         self.prediction_set.append(terminal)
     
     def __str__(self):
-        return " ".join(self.right_part)
+        return " ".join(self.right_part) + " : {" + ", ".join(self.prediction_set) + "}"
