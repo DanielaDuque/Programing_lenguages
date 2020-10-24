@@ -60,10 +60,10 @@ def main():
 
     # print(gramm["main_prog"].first)
 
-    for r, right_part in gramm.items():  # regla, y not_terminal
-        for ru in right_part.rules: # iteracion sobre not_terminal de
-            print("<<<<<<<<<>>>")
-            print (r, " -> ", ru.right_part, " : ",ru.prediction_set)
+    # for r, right_part in gramm.items():  # regla, y not_terminal
+    #     for ru in right_part.rules: # iteracion sobre not_terminal de
+    #         print("<<<<<<<<<>>>")
+    #         print (r, " -> ", ru.right_part, " : ",ru.prediction_set)
 
 
 
