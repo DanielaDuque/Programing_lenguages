@@ -59,16 +59,16 @@ grammarDictionary = {
         Not_terminal('stmt', 
                      [Rule('print lexpr tk_puntoycoma'),
                       Rule('input id tk_puntoycoma'), 
-                      Rule('when tk_par_izq lexpr tk_par_der do stmt_block'), 
-                      Rule('if tk_par_izq lexpr tk_par_der do stmt_block else stmt_block'),
-                      Rule('unless tk_par_izq lexpr tk_par_der do stmt_block'),
-                      Rule('while tk_par_izq lexpr tk_par_der do stmt_block'),
+                      Rule('when tk_par_izq lexpr_par tk_par_der do stmt_block'), 
+                      Rule('if tk_par_izq lexpr_par tk_par_der do stmt_block else stmt_block'),
+                      Rule('unless tk_par_izq lexpr_par tk_par_der do stmt_block'),
+                      Rule('while tk_par_izq lexpr_par tk_par_der do stmt_block'),
                       Rule('return lexpr tk_puntoycoma'), 
-                      Rule('until tk_par_izq lexpr tk_par_der do stmt_block'), 
+                      Rule('until tk_par_izq lexpr_par tk_par_der do stmt_block'), 
                       Rule('loop stmt_block'), 
                       Rule('do stmt_block L'), 
                       Rule('repeat tk_num tk_dospuntos stmt_block'),
-                      Rule('for tk_par_izq lexpr tk_puntoycoma lexpr tk_puntoycoma lexpr tk_par_der do stmt_block'), 
+                      Rule('for tk_par_izq lexpr tk_puntoycoma lexpr tk_puntoycoma lexpr_par tk_par_der do stmt_block'), 
                       Rule('next tk_puntoycoma'), 
                       Rule('break tk_puntoycoma'), 
                       Rule('tk_decremento id tk_puntoycoma'), 
@@ -86,15 +86,17 @@ grammarDictionary = {
                        Rule('tk_decremento')]),
     'L': 
         Not_terminal('L', 
-                      [Rule('while tk_par_izq lexpr tk_par_der'), 
-                       Rule('until tk_par_izq lexpr tk_par_der')]),
+                      [Rule('while tk_par_izq lexpr_par tk_par_der'), 
+                       Rule('until tk_par_izq lexpr_par tk_par_der')]),
     'nexpr': 
         Not_terminal('nexpr',
-                     [Rule('not tk_par_izq lexpr tk_par_der'), 
+                     [Rule('not tk_par_izq lexpr_par tk_par_der'), 
                       Rule('rexpr')]),
     'lexpr': 
         Not_terminal('lexpr', 
                      [Rule('nexpr M')]),
+
+    
     'M':
         Not_terminal('M', 
                      [Rule('N'),
@@ -108,6 +110,43 @@ grammarDictionary = {
         Not_terminal('O', 
                      [Rule('or nexpr O'),
                       Rule('epsilon')]),
+
+    'lexpr_par': 
+        Not_terminal('lexpr_par', 
+                     [Rule('nexpr M_par')]),
+    
+    'M_par':
+        Not_terminal('M_par', 
+                     [Rule('N_par'),
+                      Rule('O_par'),
+                      Rule('epsilon')]),
+    'N_par': 
+        Not_terminal('N_par', 
+                     [Rule('and nexpr N_par'),
+                      Rule('epsilon')]),
+    'O_par': 
+        Not_terminal('O_par', 
+                     [Rule('or nexpr O_par'),
+                      Rule('epsilon')]),
+
+    'lexpr_comma': 
+        Not_terminal('lexpr_comma', 
+                     [Rule('nexpr M_comma')]),
+
+    'M_comma':
+        Not_terminal('M_comma', 
+                     [Rule('N_comma'),
+                      Rule('O_comma'),
+                      Rule('epsilon')]),
+    'N_comma': 
+        Not_terminal('N_comma', 
+                     [Rule('and nexpr N_comma'),
+                      Rule('epsilon')]),
+    'O_comma': 
+        Not_terminal('O_comma', 
+                     [Rule('or nexpr O_comma'),
+                      Rule('epsilon')]),
+
     'rexpr': 
         Not_terminal('rexpr', 
                      [Rule('simple_expr P')]),
@@ -151,7 +190,7 @@ grammarDictionary = {
                       Rule('id U'),
                       Rule('tk_incremento id'),
                       Rule('tk_decremento id'),
-                      Rule('tk_par_izq lexpr tk_par_der'),
+                      Rule('tk_par_izq lexpr_par tk_par_der'),
                       Rule('fid tk_par_izq V tk_par_der')]),
     'U': 
         Not_terminal('U', 
@@ -160,11 +199,11 @@ grammarDictionary = {
                       Rule('epsilon')]),
     'V': 
         Not_terminal('V', 
-                     [Rule('lexpr W'),
+                     [Rule('lexpr_comma W'),
                       Rule('epsilon')]),
     'W': 
         Not_terminal('W', 
-                     [Rule('tk_coma lexpr W'),
+                     [Rule('tk_coma lexpr_comma W'),
                       Rule('epsilon')]),
 }
 if __name__ == "__main__":
