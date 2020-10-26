@@ -9,7 +9,6 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
     # print(char_actual)
     gram = grammar.copy()
 
-    # seen.append(char_actual)
     if char_actual == char_inicial: #signo inicial tiene siempre $
         gram.get(char_actual).put_next("$")
 
@@ -18,18 +17,13 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
             for i in range(len(rule.right_part)): # iteracion sobre caracteres de la regla
                 character = rule.right_part[i]
                 if character == char_actual: # Confirma que sea l no tereminal ara el cual se calcula next
-                    # print("hola ",char_actual)
                     if i+1==len(rule.right_part): # Si es el ultimo de la regla
-                        # print("ultimo ", r)
 
                         if character == r or r in seen:
-                            # print("continue")
-                            # print("seen")
                             continue
                         elif not len(right_part.next):
                             seen.append(r)
                             # print(r, " ", char_actual)
-                            # print("no visto: ")
                             aux = next_aux(gram, grammar_class, char_seen, r, isterminal,char_inicial).get(r).next # next(regla)
                             # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
                             # print("actual ", char_actual, " aux ", aux)
@@ -59,6 +53,8 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
                                 continue
                             # print(">>>",right_part.not_terminal, " ",rule.right_part, " ",right_part.next )
 
+                            # print("seg >>> ", r, " ", char_actual)
+
                             if len(right_part.next) == 0:
                                 # print( "recursion")
                                 seen.append(r)
@@ -73,63 +69,7 @@ def next_aux(grammar, grammar_class, char_seen, char_actual, isterminal, char_in
 
     return gram
 
-# def getRuleFirsts(grammar, rule):
-#     firsts = set()
-#     for symbol in rule.right_part:
-#         if symbol not in grammar:
-#             firsts.add(symbol)
-#             if symbol == "epsilon":
-#                 return firsts
-#             return firsts.difference({"epsilon"})
-#         else:
-#             noTerminalFirsts = grammar[symbol].first
-#             for nt in noTerminalFirsts:
-#                 firsts.add(nt)
-#             if "epsilon" not in noTerminalFirsts:
-#                 return firsts.difference({"epsilon"})
-#     return firsts
-# #
-# #
-# def next(gram):
-#
-#     grammar = gram.rules.copy()
-#
-#     completed = False
-#     changes = {k: 0 for k in grammar.keys()}
-#     while not completed:
-#         completed = True  # paso 3 verificar si hubo cambios
-#         for noTerminalSymbol, rules in grammar.items():
-#             rules = rules.rules
-#             if noTerminalSymbol == 'prog':  # paso 1
-#                 grammar[noTerminalSymbol].put_next("$")
-#             for rule_1 in rules:
-#                 symbols = rule_1.right_part
-#                 for i, symbol in enumerate(symbols):
-#                     if symbol in grammar:  # verifica que sea no terminal
-#                         # print(symbol)
-#                         if i == len(symbols) - 1:  # ultimo elemento de la regla
-#                             nextNoTerminalSymbol = grammar[noTerminalSymbol].next
-#                             grammar[symbol].put_next(
-#                                 nextNoTerminalSymbol)
-#                             break
-#                         nextSymbol = symbols[i + 1]
-#                         if nextSymbol in grammar:  # siguiente es no terminal
-#                             nextSymbolFirsts = set(getRuleFirsts(
-#                                 grammar, rule.Rule(" ".join(symbols[i + 1:]))))
-#                             nextFirsts = list(
-#                                 set(nextSymbolFirsts).difference({"epsilon"}))
-#                             grammar[symbol].put_next(nextFirsts)
-#                             if "epsilon" in nextSymbolFirsts:
-#                                 nextNoTerminalSymbol = grammar[noTerminalSymbol].next
-#                                 grammar[symbol].put_next(
-#                                     nextNoTerminalSymbol)
-#                         else:  # siguiente es no terminal
-#                             grammar[symbol].put_next(nextSymbol)
-#             if changes[noTerminalSymbol] < len(grammar[noTerminalSymbol].next):
-#                 changes[noTerminalSymbol] = len(
-#                     grammar[noTerminalSymbol].next)
-#                 completed = False
-#     return grammar
+
                 
 def next (grammar):
     gramm = grammar.rules.copy()
@@ -149,11 +89,15 @@ def main():
 
     gramar.rules = first.first(gramar).copy()
     # gra = next(gramar)
-    gra = next(gramar)
+    # gra = next(gramar)
+
+    gram = next_aux(gramar.rules, gramar, [], "S", lambda x: gramar.is_terminal(x), "prog")
+
+
     #
-    # print(gra["S"].next)
-    for key, value in gra.items():
-        print(key, " ", value.next)
+    # print(gram["S"].next)
+    # for key, value in gra.items():
+    #     print(key, " ", value.next)
 
     # from first import first, first_string
 
@@ -175,7 +119,7 @@ def main():
     # grammar.rules = first(grammar).copy()
 
 
-    #gram = next_aux(gramar.rules, [] , "D", lambda x: gramar.is_terminal(x), "S") 
+    # gram = next_aux(gramar.rules, [] , "D", lambda x: gramar.is_terminal(x), "S")
 
 
     # print(grammar["S"].next,grammar["A"].next,grammar["B"].next,grammar["C"].next,grammar["D"].next)

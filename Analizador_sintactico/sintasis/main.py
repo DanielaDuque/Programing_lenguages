@@ -11,12 +11,7 @@ Autores:
 """
 
 import lexico
-import rule
 from grammar import Grammar
-import not_terminal
-from first import first, first_string
-from next import next
-from grammar_definition import grammarDictionary
 import pickle
 
 
@@ -195,7 +190,7 @@ def main():
     file = open("predition_set.obj", 'rb')
     dic = pickle.load(file)
     final_grammar = Grammar(dic)
-    print(final_grammar)
+    # print(final_grammar)
     try:
         asd('prog', final_grammar, lexical)
         print("El analisis sintactico ha finalizado correctamente.")

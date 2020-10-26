@@ -7,7 +7,6 @@ from grammar_definition import grammarDictionary
 import pickle
 
 def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
-
     gram = grammar.rules.copy()
     for r, right_part in gram.items():  # regla, y not_terminal
         for rule in right_part.rules: # iteracion sobre not_terminal de

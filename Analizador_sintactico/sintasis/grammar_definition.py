@@ -92,6 +92,17 @@ grammarDictionary = {
         Not_terminal('nexpr',
                      [Rule('not tk_par_izq lexpr_par tk_par_der'), 
                       Rule('rexpr')]),
+
+    'nexpr_par':
+            Not_terminal('nexpr_par',
+                         [Rule('not tk_par_izq lexpr_par tk_par_der'),
+                          Rule('rexpr_par')]),
+
+    'nexpr_coma':
+        Not_terminal('nexpr_coma',
+                     [Rule('not tk_par_izq lexpr_par tk_par_der'),
+                      Rule('rexpr_comma')]),
+
     'lexpr': 
         Not_terminal('lexpr', 
                      [Rule('nexpr M')]),
@@ -113,7 +124,7 @@ grammarDictionary = {
 
     'lexpr_par': 
         Not_terminal('lexpr_par', 
-                     [Rule('nexpr M_par')]),
+                     [Rule('nexpr_par M_par')]),
     
     'M_par':
         Not_terminal('M_par', 
@@ -122,16 +133,16 @@ grammarDictionary = {
                       Rule('epsilon')]),
     'N_par': 
         Not_terminal('N_par', 
-                     [Rule('and nexpr N_par'),
+                     [Rule('and nexpr_par N_par'),
                       Rule('epsilon')]),
     'O_par': 
         Not_terminal('O_par', 
-                     [Rule('or nexpr O_par'),
+                     [Rule('or nexpr_par O_par'),
                       Rule('epsilon')]),
 
     'lexpr_comma': 
         Not_terminal('lexpr_comma', 
-                     [Rule('nexpr M_comma')]),
+                     [Rule('nexpr_coma M_comma')]),
 
     'M_comma':
         Not_terminal('M_comma', 
@@ -140,20 +151,38 @@ grammarDictionary = {
                       Rule('epsilon')]),
     'N_comma': 
         Not_terminal('N_comma', 
-                     [Rule('and nexpr N_comma'),
+                     [Rule('and nexpr_comma N_comma'),
                       Rule('epsilon')]),
     'O_comma': 
         Not_terminal('O_comma', 
-                     [Rule('or nexpr O_comma'),
+                     [Rule('or nexpr_comma O_comma'),
                       Rule('epsilon')]),
 
     'rexpr': 
         Not_terminal('rexpr', 
                      [Rule('simple_expr P')]),
+
+    'rexpr_par':
+        Not_terminal('rexpr_par',
+                     [Rule('simple_expr_par P_par')]),
+    'rexpr_comma':
+        Not_terminal('rexpr_comma',
+                     [Rule('simple_expr_comma P_comma')]),
     'P': 
         Not_terminal('P', 
                      [Rule('Q simple_expr'),
                       Rule('epsilon')]),
+
+    'P_par':
+        Not_terminal('P_par',
+                     [Rule('Q simple_expr_par'),
+                      Rule('epsilon')]),
+
+    'P_comma':
+        Not_terminal('P_comma',
+                     [Rule('Q simple_expr_comma'),
+                      Rule('epsilon')]),
+
     'Q': 
         Not_terminal('Q', 
                      [Rule('tk_menor'),
@@ -165,17 +194,53 @@ grammarDictionary = {
     'simple_expr': 
         Not_terminal('simple_expr', 
                      [Rule('term R')]),
+    'simple_expr_par':
+        Not_terminal('simple_expr_par',
+                     [Rule('term_par R_par')]),
+    'simple_expr_comma':
+        Not_terminal('simple_expr_comma',
+                     [Rule('term_comma R_comma')]),
     'R': 
         Not_terminal('R', 
                      [Rule('tk_mas term R'),
                       Rule('tk_menos term R'),
                       Rule('epsilon')]),
+
+    'R_par':
+        Not_terminal('R_par',
+                     [Rule('tk_mas term_par R_par'),
+                      Rule('tk_menos term_par R_par'),
+                      Rule('epsilon')]),
+    'R_comma':
+        Not_terminal('R_comma',
+                     [Rule('tk_mas term_comma R_comma'),
+                      Rule('tk_menos term_comma R_comma'),
+                      Rule('epsilon')]),
+
     'term': 
         Not_terminal('term', 
                      [Rule('factor S')]),
+    'term_par':
+        Not_terminal('term_par',
+                     [Rule('factor S_par')]),
+
+    'term_comma':
+        Not_terminal('term_comma',
+                     [Rule('factor S_comma')]),
+
     'S': 
         Not_terminal('S', 
                      [Rule('T factor S'),
+                      Rule('epsilon')]),
+
+    'S_par':
+        Not_terminal('S_par',
+                     [Rule('T factor S_par'),
+                      Rule('epsilon')]),
+
+    'S_comma':
+        Not_terminal('S_comma',
+                     [Rule('T factor S_comma'),
                       Rule('epsilon')]),
     'T': 
         Not_terminal('T', 
