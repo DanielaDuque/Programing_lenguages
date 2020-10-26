@@ -12,13 +12,13 @@ def prediction_set(grammar):  # funcion recursiva para obtener los no terminales
     for r, right_part in gram.items():  # regla, y not_terminal
         for rule in right_part.rules: # iteracion sobre not_terminal de
             aux_var = first_string(grammar, rule.right_part)
+
             if "epsilon" in aux_var:
                 rule.prediction_set = aux_var + gram.get(r).next
                 rule.prediction_set.remove("epsilon")
             else:
                 rule.prediction_set = aux_var
             rule.prediction_set.sort()
-
 
     filehandler = open(b"predition_set.obj", "wb")
     pickle.dump(gram, filehandler)
@@ -55,15 +55,17 @@ def main():
     
     grammar_1.rules = first(grammar_1).copy()
 
-    grammar_1.rules = next (grammar_1).copy()
+    grammar_1.rules = next(grammar_1).copy()
     gramm= prediction_set(grammar_1).copy()
+
+    # print(gramm)
 
     # print(gramm["main_prog"].first)
 
-    # for r, right_part in gramm.items():  # regla, y not_terminal
-    #     for ru in right_part.rules: # iteracion sobre not_terminal de
-    #         print("<<<<<<<<<>>>")
-    #         print (r, " -> ", ru.right_part, " : ",ru.prediction_set)
+    for r, right_part in gramm.items():  # regla, y not_terminal
+        for ru in right_part.rules: # iteracion sobre not_terminal de
+            print("<<<<<<<<<>>>")
+            print (r, " -> ", ru.right_part, " : ",ru.prediction_set)
 
 
 

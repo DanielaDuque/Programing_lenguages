@@ -195,7 +195,7 @@ def main():
     file = open("predition_set.obj", 'rb')
     dic = pickle.load(file)
     final_grammar = Grammar(dic)
-    # print(final_grammar)
+    print(final_grammar)
     try:
         asd('prog', final_grammar, lexical)
         print("El analisis sintactico ha finalizado correctamente.")
