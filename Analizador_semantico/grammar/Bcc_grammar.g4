@@ -4,12 +4,11 @@ prog:
     fn_decl_list* main_prog;
 
 main_prog :
-    ( 'var' var_decl Tk_puntoycoma | ) stmt* 'end';
+    ( Var var_decl Tk_puntoycoma | ) stmt* End;
 
-hola: Tk_type;
 fn_decl_list:
-    'function' FID Tk_dospuntos Tk_type Tk_par_izq ( var_decl | )  Tk_par_der ( 'var' var_decl Tk_puntoycoma | ) stmt_block ;
-    
+    Function FID Tk_dospuntos Tk_type Tk_par_izq ( var_decl | )  Tk_par_der ( Var var_decl Tk_puntoycoma | ) stmt_block ;
+
 var_decl: ID Tk_dospuntos Tk_type (Tk_coma ID Tk_dospuntos Tk_type)*;
 
 stmt_block:
@@ -17,24 +16,24 @@ stmt_block:
     | stmt;
 
 
-stmt: 'print' lexpr Tk_puntoycoma
-	| 'input' ID Tk_puntoycoma
-	| 'when' Tk_par_izq lexpr Tk_par_der 'do' stmt_block
-	| 'if' Tk_par_izq lexpr Tk_par_der 'do' stmt_block 'else' stmt_block
-	| 'while' Tk_par_izq lexpr Tk_par_der 'do' stmt_block
-    | 'return' lexpr Tk_puntoycoma
-	| 'unless' Tk_par_izq lexpr Tk_par_der 'do' stmt_block
-	| 'until' Tk_par_izq lexpr Tk_par_der 'do' stmt_block
-	| 'loop' stmt_block
-	| 'do' stmt_block 'while' Tk_par_izq lexpr Tk_par_der
-	| 'do' stmt_block 'until' Tk_par_izq lexpr Tk_par_der
-	| 'repeat' Tk_num Tk_dospuntos stmt_block
-    | 'for' Tk_par_izq lexpr Tk_puntoycoma lexpr Tk_puntoycoma lexpr Tk_par_der 'do' stmt_block
-    | 'next' Tk_puntoycoma
-    | 'break' Tk_puntoycoma
+stmt: Print lexpr Tk_puntoycoma
+	| Input ID Tk_puntoycoma
+	| When Tk_par_izq lexpr Tk_par_der Do stmt_block
+	| If Tk_par_izq lexpr Tk_par_der Do stmt_block Else stmt_block
+	| While Tk_par_izq lexpr Tk_par_der Do stmt_block
+    | Return lexpr Tk_puntoycoma
+	| Unless Tk_par_izq lexpr Tk_par_der Do stmt_block
+	| Until Tk_par_izq lexpr Tk_par_der Do stmt_block
+	| Loop stmt_block
+	| Do stmt_block While Tk_par_izq lexpr Tk_par_der
+	| Do stmt_block Until Tk_par_izq lexpr Tk_par_der
+	| Repeat Tk_num Tk_dospuntos stmt_block
+    | For Tk_par_izq lexpr Tk_puntoycoma lexpr Tk_puntoycoma lexpr Tk_par_der Do stmt_block
+    | Next Tk_puntoycoma
+    | Break Tk_puntoycoma
     | ID Tk_asignacion lexpr Tk_puntoycoma
     | ID Tk_sum_asig lexpr Tk_puntoycoma
-    | IDTk_res_asig lexpr Tk_puntoycoma
+    | ID Tk_res_asig lexpr Tk_puntoycoma
     | ID Tk_mul_asig lexpr Tk_puntoycoma
     | ID Tk_div_asig lexpr Tk_puntoycoma
     | ID Tk_mod_asig lexpr Tk_puntoycoma
@@ -43,9 +42,9 @@ stmt: 'print' lexpr Tk_puntoycoma
     | Tk_decremento ID Tk_puntoycoma
     | Tk_incremento ID Tk_puntoycoma;
 
-lexpr: nexpr (('and' nexpr)* | ('or' nexpr)* | );
+lexpr: nexpr ((And nexpr)* | (Or nexpr)* | );
 
-nexpr: 'not' Tk_par_izq lexpr Tk_par_der
+nexpr: Not Tk_par_izq lexpr Tk_par_der
 	| rexpr;
 
 rexpr: simple_expr ( (Tk_menor|Tk_igualdad|Tk_menor_igual|Tk_mayor|Tk_mayor_igual|Tk_diferente) simple_expr | );
@@ -63,6 +62,32 @@ factor:
     | ID
     | Tk_par_izq lexpr Tk_par_der
     | FID Tk_par_izq (lexpr (Tk_coma lexpr)* | )  Tk_par_der ;
+
+
+
+End : 'end';
+Print : 'print';
+Input : 'input';
+When : 'when';
+If : 'if';
+Unless :'unless';
+While : 'while';
+Return : 'return';
+Until : 'until';
+Loop : 'loop';
+Do : 'do';
+Else : 'else';
+Repeat : 'repeat';
+For : 'for';
+Next : 'next';
+Break : 'break';
+Not : 'not';
+And : 'and';
+Or : 'or';
+Var : 'var';
+Function : 'function';
+
+
 
 
 /**
@@ -108,28 +133,7 @@ Tk_llave_der : '}';
  ------------- Palabras reservadas ---------------
 */
 
-/*
-End : 'end';
-Print : 'print';
-Input : 'input';
-When : 'when';
-If : 'if';
-Unless :'unless';
-While : 'while';
-Return : 'return';
-Until : 'until';
-Loop : 'loop';
-Do : 'do';
-Else : 'else';
-Repeat : 'repeat';
-For : 'for';
-Next : 'next';
-Break : 'break';
-Not : 'not';
-And : 'and';
-Or : 'or';
-Var : 'var';
-Function : 'function';
-*/
+
+
 ESP : [ \t\r\n]+ -> skip ;
 Directive: '#' ~ [\n]* -> channel (HIDDEN);
