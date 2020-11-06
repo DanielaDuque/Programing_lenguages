@@ -64,6 +64,11 @@ factor:
     | FID Tk_par_izq (lexpr (Tk_coma lexpr)* | )  Tk_par_der ;
 
 
+/**
+ ------------- Palabras reservadas ---------------
+*/
+
+
 
 End : 'end';
 Print : 'print';
@@ -129,9 +134,6 @@ Tk_llave_izq : '{';
 Tk_llave_der : '}';
 
 
-/**
- ------------- Palabras reservadas ---------------
-*/
 
 
 
