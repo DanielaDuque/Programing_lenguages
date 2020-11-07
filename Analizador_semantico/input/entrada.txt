@@ -1,11 +1,4 @@
-
-function @min:num (x:num, y:num)
-  {
-  when ((x < y) == true) do return x;
-  return y;
-  }
-
-
+## función max(x, y)
 function @max:num (x:num, y:num)
   {
   if ((x < y) == false) do

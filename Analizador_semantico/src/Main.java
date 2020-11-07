@@ -16,7 +16,7 @@ public class Main {
             // Crear el objeto correspondiente al analizador sintáctico que se alimenta a partir del buffer de tokens
             Bcc_GrammarParser parser = new Bcc_GrammarParser(tokens);
             ParseTree tree = parser.prog(); // Iniciar el analisis sintáctico en la regla inicial: r
-            System.out.println(tree.toStringTree(parser)); // imprime el arbol al estilo LISP
+            //System.out.println(tree.toStringTree(parser)); // imprime el arbol al estilo LISP
         } catch (Exception e){
             System.err.println("Error (Test): " + e);
         }
