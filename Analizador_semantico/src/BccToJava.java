@@ -3,6 +3,11 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class BccToJava extends Bcc_GrammarBaseListener {
+
+    String stmBlockNextWord="";
+    String lexprNextWord ="";
+    boolean tkLlaveExits = false;
+
     /**
      * {@inheritDoc}
      *
@@ -21,13 +26,18 @@ public class BccToJava extends Bcc_GrammarBaseListener {
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void enterMain_prog(Bcc_GrammarParser.Main_progContext ctx) { }
+    @Override public void enterMain_prog(Bcc_GrammarParser.Main_progContext ctx) {
+        System.out.println("public class Translate { \n"+
+            "public static void main(String[] args) throws Exception {\n");
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void exitMain_prog(Bcc_GrammarParser.Main_progContext ctx) { }
+    @Override public void exitMain_prog(Bcc_GrammarParser.Main_progContext ctx) {
+        System.out.println("\n\n}\n}");
+    }
     /**
      * {@inheritDoc}
      *
@@ -57,25 +67,65 @@ public class BccToJava extends Bcc_GrammarBaseListener {
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void enterStmt_block(Bcc_GrammarParser.Stmt_blockContext ctx) { }
+    @Override public void enterStmt_block(Bcc_GrammarParser.Stmt_blockContext ctx) {
+        if(ctx.Tk_llave_der() != null){
+            tkLlaveExits = false;
+            System.out.print(" {\n");
+        }
+
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void exitStmt_block(Bcc_GrammarParser.Stmt_blockContext ctx) { }
+    @Override public void exitStmt_block(Bcc_GrammarParser.Stmt_blockContext ctx) {
+        if(ctx.Tk_llave_der() != null){
+            tkLlaveExits = true;
+            System.out.print(" }\n " + stmBlockNextWord);
+            stmBlockNextWord = "";
+        }
+
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void enterStmt(Bcc_GrammarParser.StmtContext ctx) { }
+    @Override public void enterStmt(Bcc_GrammarParser.StmtContext ctx) {
+        if (ctx.Print() != null){
+            System.out.print("\nSystem.out.print (");
+        }
+        if (ctx.If() != null){
+            System.out.print("if");
+            stmBlockNextWord = "else";
+        }
+        if (ctx.Return() != null){
+            System.out.print("return ");
+        }
+
+
+        if (ctx.getStart().getText() == "if" && ctx.Do()!=null){
+            System.out.println("{");
+        }
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void exitStmt(Bcc_GrammarParser.StmtContext ctx) { }
+    @Override public void exitStmt(Bcc_GrammarParser.StmtContext ctx) {
+        if (ctx.Print() != null){
+            System.out.print(" );");
+        }
+        if(ctx.Tk_puntoycoma() != null && !tkLlaveExits){
+            tkLlaveExits = false;
+            //System.out.println("<<<"+ctx.getText()+ '\n');
+            System.out.println(";");
+
+        }
+        //System.out.println(ctx.getText()+ '\n');
+    }
     /**
      * {@inheritDoc}
      *
@@ -87,7 +137,11 @@ public class BccToJava extends Bcc_GrammarBaseListener {
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void exitLexpr(Bcc_GrammarParser.LexprContext ctx) { }
+    @Override public void exitLexpr(Bcc_GrammarParser.LexprContext ctx) {
+
+        System.out.print(lexprNextWord);
+        lexprNextWord ="";
+    }
     /**
      * {@inheritDoc}
      *
@@ -143,8 +197,19 @@ public class BccToJava extends Bcc_GrammarBaseListener {
      */
     @Override public void enterFactor(Bcc_GrammarParser.FactorContext ctx) {
         if (ctx.FID() != null){
-            System.out.println(ctx.getText());
+            String funtion = ctx.FID().getText();
+            System.out.print(funtion.substring(1));
         }
+        else if (ctx.Tk_bool() != null) {
+            System.out.print(ctx.getText());
+        }
+        else if (ctx.Tk_num() != null) {
+            System.out.print(ctx.getText());
+        }
+        else if (ctx.ID() != null) {
+            System.out.print(ctx.getText());
+        }
+
     }
     /**
      * {@inheritDoc}
@@ -171,7 +236,30 @@ public class BccToJava extends Bcc_GrammarBaseListener {
      *
      * <p>The default implementation does nothing.</p>
      */
-    @Override public void visitTerminal(TerminalNode node) {  }
+    @Override public void visitTerminal(TerminalNode node) {
+        String token = node.getText();
+        switch (token){
+            case "(":
+                System.out.print("( ");
+                break;
+            case ")":
+                System.out.print(") ");
+                break;
+            case ",":
+                System.out.print(", ");
+                break;
+            case "<":
+                System.out.print(" < ");
+                break;
+            case "==":
+                System.out.print(" == ");
+                break;
+            default:
+                break;
+        }
+
+
+    }
 
     /**
      * {@inheritDoc}
