@@ -1,4 +1,4 @@
-grammar Bcc_Grammar;
+grammar Bcc_grammar;
 
 prog:
     fn_decl_list* main_prog;

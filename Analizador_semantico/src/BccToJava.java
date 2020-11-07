@@ -105,7 +105,7 @@ public class BccToJava extends Bcc_GrammarBaseListener {
         }
 
 
-        if (ctx.getStart().getText() == "if" && ctx.Do()!=null){
+        if (ctx.getStart().getText().equals("if")  && ctx.Do()!=null){
             System.out.println("{");
         }
     }
