@@ -1,11 +1,18 @@
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BccToJava extends Bcc_GrammarBaseListener {
 
-    String stmBlockNextWord="";
+    Queue<String> stmBlockNextWord= new LinkedList();
     String lexprNextWord ="";
+
+    Bcc_GrammarParser parser;
+
     boolean tkLlaveExits = false;
 
     /**
@@ -80,10 +87,16 @@ public class BccToJava extends Bcc_GrammarBaseListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override public void exitStmt_block(Bcc_GrammarParser.Stmt_blockContext ctx) {
+
         if(ctx.Tk_llave_der() != null){
             tkLlaveExits = true;
-            System.out.print(" }\n " + stmBlockNextWord);
-            stmBlockNextWord = "";
+            System.out.print(" }\n ");
+           // System.out.println("<<<"+ctx.parent);
+            if (!stmBlockNextWord.isEmpty()) {
+                System.out.print(stmBlockNextWord.poll());
+                //System.out.println("else");
+            }
+
         }
 
     }
@@ -93,21 +106,24 @@ public class BccToJava extends Bcc_GrammarBaseListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override public void enterStmt(Bcc_GrammarParser.StmtContext ctx) {
+        //System.out.println(ctx.toString());
+       //stmBlockNextWord.add("") ;
+        System.out.println("<<<" + ctx);
         if (ctx.Print() != null){
             System.out.print("\nSystem.out.print (");
         }
         if (ctx.If() != null){
             System.out.print("if");
-            stmBlockNextWord = "else";
+            stmBlockNextWord.add("else") ;
         }
         if (ctx.Return() != null){
             System.out.print("return ");
         }
-
-
-        if (ctx.getStart().getText().equals("if")  && ctx.Do()!=null){
-            System.out.println("{");
+        if (ctx.Else() != null){
+            System.out.print("else cosita");
+            //stmBlockNextWord.add("else") ;
         }
+
     }
     /**
      * {@inheritDoc}
