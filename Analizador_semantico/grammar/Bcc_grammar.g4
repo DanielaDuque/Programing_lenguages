@@ -8,60 +8,67 @@ main_prog :
 
 fn_decl_list:
     Function FID Tk_dospuntos Tk_type Tk_par_izq ( var_decl | )  Tk_par_der ( Var var_decl Tk_puntoycoma | ) stmt_block ;
+    /*  Creo que toca duplicar var_decl, ya que en un lado es separada por comas (cuando
+        las declaras como tipos de entrada en las funciones) , pero en java cuando declaras
+        variables locales van con punto y comma. La verdad la forma más sencilla d solucionar
+        el problema para mi sera duplicando var_decl. Serian iguales, pero en la traduccion
+        a unas les pondriamos coma y a otras punto y coma.
 
-var_decl: ID Tk_dospuntos Tk_type (Tk_coma ID Tk_dospuntos Tk_type)*;
+        Igual en main_prog, hay tambien serian en traducion con punto y coma en vez de coma.
+    */
+var_decl: ID Tk_dospuntos Tk_type (Tk_coma ID Tk_dospuntos Tk_type)*; // Check separado por comas
 
 stmt_block:
-    Tk_llave_izq stmt+ Tk_llave_der
-    | stmt;
+    Tk_llave_izq stmt+ Tk_llave_der // Check
+    | stmt; // Check
 
 
-stmt: Print lexpr Tk_puntoycoma
-	| Input ID Tk_puntoycoma
+stmt: Print lexpr Tk_puntoycoma // Check
+	| Input ID Tk_puntoycoma // Check
 	| When Tk_par_izq lexpr Tk_par_der Do stmt_block
-	| If Tk_par_izq lexpr Tk_par_der Do stmt_block Else stmt_block
-	| While Tk_par_izq lexpr Tk_par_der Do stmt_block
-    | Return lexpr Tk_puntoycoma
+	| If Tk_par_izq lexpr Tk_par_der Do stmt_block Else stmt_block // Check
+	| While Tk_par_izq lexpr Tk_par_der Do stmt_block // Check
+    | Return lexpr Tk_puntoycoma // Check
 	| Unless Tk_par_izq lexpr Tk_par_der Do stmt_block
-	| Until Tk_par_izq lexpr Tk_par_der Do stmt_block
-	| Loop stmt_block
-	| Do stmt_block While Tk_par_izq lexpr Tk_par_der
-	| Do stmt_block Until Tk_par_izq lexpr Tk_par_der
-	| Repeat Tk_num Tk_dospuntos stmt_block
+	| Until Tk_par_izq lexpr Tk_par_der Do stmt_block // check
+	| Loop stmt_block // check
+	| Do stmt_block While Tk_par_izq lexpr Tk_par_der // Check
+	| Do stmt_block Until Tk_par_izq lexpr Tk_par_der // Check
+	| Repeat Tk_num Tk_dospuntos stmt_block // check
     | For Tk_par_izq lexpr Tk_puntoycoma lexpr Tk_puntoycoma lexpr Tk_par_der Do stmt_block
-    | Next Tk_puntoycoma
-    | Break Tk_puntoycoma
-    | ID Tk_asignacion lexpr Tk_puntoycoma
-    | ID Tk_sum_asig lexpr Tk_puntoycoma
-    | ID Tk_res_asig lexpr Tk_puntoycoma
-    | ID Tk_mul_asig lexpr Tk_puntoycoma
-    | ID Tk_div_asig lexpr Tk_puntoycoma
-    | ID Tk_mod_asig lexpr Tk_puntoycoma
-    | ID Tk_incremento Tk_puntoycoma
-    | ID Tk_decremento Tk_puntoycoma
-    | Tk_decremento ID Tk_puntoycoma
-    | Tk_incremento ID Tk_puntoycoma;
+    | Next Tk_puntoycoma // Check
+    | Break Tk_puntoycoma // Check
+    | ID Tk_asignacion lexpr Tk_puntoycoma // Check
+    | ID Tk_sum_asig lexpr Tk_puntoycoma // Check en teoria
+    | ID Tk_res_asig lexpr Tk_puntoycoma // Check en teoria
+    | ID Tk_mul_asig lexpr Tk_puntoycoma // Check en teoria
+    | ID Tk_div_asig lexpr Tk_puntoycoma // Check en teoria
+    | ID Tk_mod_asig lexpr Tk_puntoycoma // Check en teoria
+    | ID Tk_incremento Tk_puntoycoma // Check
+    | ID Tk_decremento Tk_puntoycoma // Check
+    | Tk_decremento ID Tk_puntoycoma // Check
+    | Tk_incremento ID Tk_puntoycoma; // Check
 
-lexpr: nexpr ((And nexpr)* | (Or nexpr)* | );
+lexpr: nexpr ((And nexpr)* | (Or nexpr)* | ); // Check en teoria
 
-nexpr: Not Tk_par_izq lexpr Tk_par_der
+nexpr: Not Tk_par_izq lexpr Tk_par_der // Check en teoria
 	| rexpr;
 
-rexpr: simple_expr ( (Tk_menor|Tk_igualdad|Tk_menor_igual|Tk_mayor|Tk_mayor_igual|Tk_diferente) simple_expr | );
+rexpr: simple_expr ( (Tk_menor|Tk_igualdad|Tk_menor_igual|Tk_mayor|Tk_mayor_igual|Tk_diferente) simple_expr | ); // Check en teoria
 
-simple_expr: term ((Tk_mas|Tk_menos) term)*;
+simple_expr: term ((Tk_mas|Tk_menos) term)*; // Check en teoria
 
-term: factor ( (Tk_mul|Tk_div|Tk_mod) factor)*;
+term: factor ( (Tk_mul|Tk_div|Tk_mod) factor)*; // Check en teoria
 
 
 factor:
-    Tk_num
-    | Tk_bool
-    | ID ( Tk_incremento | Tk_decremento )
-    | ( Tk_incremento | Tk_decremento ) ID
-    | ID
-    | Tk_par_izq lexpr Tk_par_der
-    | FID Tk_par_izq (lexpr (Tk_coma lexpr)* | )  Tk_par_der ;
+    Tk_num // Check
+    | Tk_bool // Check
+    | ID ( Tk_incremento | Tk_decremento ) // Check
+    | ( Tk_incremento | Tk_decremento ) ID // Check
+    | ID // Check
+    | Tk_par_izq lexpr Tk_par_der // Check
+    | FID Tk_par_izq (lexpr (Tk_coma lexpr)* | )  Tk_par_der ; // Check
 
 
 /**
@@ -122,9 +129,9 @@ Tk_decremento : '--';
 Tk_res_asig : '-=';
 Tk_div : '/';
 Tk_div_asig : '/=';
-Tk_dospuntos : ':';
+Tk_dospuntos : ':';  // No lo traduje por que depende dee la regla see usa diferente
 Tk_asignacion : ':=';
-Tk_puntoycoma : ';';
+Tk_puntoycoma : ';'; // No lo traduje por que depende dee la regla see usa diferente
 Tk_menor : '<';
 Tk_menor_igual : '<=';
 Tk_igualdad : '==';
