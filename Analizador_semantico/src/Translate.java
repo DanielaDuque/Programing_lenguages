@@ -14,16 +14,16 @@ public class Translate {
     public static void main(String[] args) throws Exception {
         try {
             // crear un analizador léxico que se alimenta a partir de la entrada (archivo  o consola)
-            Bcc_GrammarLexer lexer;
+            Bcc_grammarLexer lexer;
             if (args.length > 0)
-                lexer = new Bcc_GrammarLexer(CharStreams.fromFileName(args[0]));
+                lexer = new Bcc_grammarLexer(CharStreams.fromFileName(args[0]));
             else
-                lexer = new Bcc_GrammarLexer(CharStreams.fromStream(System.in));
+                lexer = new Bcc_grammarLexer(CharStreams.fromStream(System.in));
 
             // create a buffer of tokens pulled from the lexer
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             // create a parser that feeds off the tokens buffer
-            Bcc_GrammarParser parser = new Bcc_GrammarParser(tokens);
+            Bcc_grammarParser parser = new Bcc_grammarParser(tokens);
             ParseTree tree = parser.prog(); // begin parsing at init rule
 
             // Create a generic parse tree walker that can trigger callbacks
@@ -31,6 +31,7 @@ public class Translate {
             // Walk the tree created during the parse, trigger callbacks
             walker.walk(new BccToJava(), tree);
             System.out.println(); // print a \n after translation
+
         } catch (Exception e) {
             System.err.println("Error (Test): " + e);
         }

@@ -4,19 +4,14 @@ prog:
     fn_decl_list* main_prog;
 
 main_prog :
-    ( Var var_decl Tk_puntoycoma | ) stmt* End;
+    ( Var var_decl_pc Tk_puntoycoma | ) stmt* End;  // Check
 
-fn_decl_list:
-    Function FID Tk_dospuntos Tk_type Tk_par_izq ( var_decl | )  Tk_par_der ( Var var_decl Tk_puntoycoma | ) stmt_block ;
-    /*  Creo que toca duplicar var_decl, ya que en un lado es separada por comas (cuando
-        las declaras como tipos de entrada en las funciones) , pero en java cuando declaras
-        variables locales van con punto y comma. La verdad la forma más sencilla d solucionar
-        el problema para mi sera duplicando var_decl. Serian iguales, pero en la traduccion
-        a unas les pondriamos coma y a otras punto y coma.
+fn_decl_list: // check, creo
+    Function FID Tk_dospuntos Tk_type Tk_par_izq ( var_decl | )  Tk_par_der ( Var var_decl_pc Tk_puntoycoma | ) stmt_block ;
 
-        Igual en main_prog, hay tambien serian en traducion con punto y coma en vez de coma.
-    */
 var_decl: ID Tk_dospuntos Tk_type (Tk_coma ID Tk_dospuntos Tk_type)*; // Check separado por comas
+
+var_decl_pc: ID Tk_dospuntos Tk_type (Tk_coma ID Tk_dospuntos Tk_type)*; // Check separado por punto y coma
 
 stmt_block:
     Tk_llave_izq stmt+ Tk_llave_der // Check

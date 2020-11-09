@@ -1,4 +1,4 @@
-// Generated from C:/Users/daniela/Documents/Universidad/Semestre 8/Lenguajes/Programing_lenguages/Analizador_semantico/grammar\Bcc_Grammar.g4 by ANTLR 4.8
+// Generated from C:/Users/vbbis/Documents/Programing_lenguages/Analizador_semantico/grammar\Bcc_grammar.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class Bcc_GrammarLexer extends Lexer {
+public class Bcc_grammarLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -107,13 +107,13 @@ public class Bcc_GrammarLexer extends Lexer {
 	}
 
 
-	public Bcc_GrammarLexer(CharStream input) {
+	public Bcc_grammarLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Bcc_Grammar.g4"; }
+	public String getGrammarFileName() { return "Bcc_grammar.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
