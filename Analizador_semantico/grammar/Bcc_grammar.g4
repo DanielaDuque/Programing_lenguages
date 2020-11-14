@@ -103,9 +103,9 @@ Function : 'function';
 
 Tk_type : 'bool'| 'num';
 Tk_bool : 'true' | 'false';
-Tk_num : [1-9]+ ( | [.] [1-9]+  );
-ID : [a-zA-Z]([a-zA-Z1-9_] )* ;
-FID: [@][a-zA-Z]([a-zA-Z1-9_] )* ;
+Tk_num : [0-9]+ ( | [.] [0-9]+  );
+ID : [a-zA-Z]([a-zA-Z0-9_] )* ;
+FID: [@][a-zA-Z]([a-zA-Z0-9_] )* ;
 
 
 Tk_diferente : '!=';

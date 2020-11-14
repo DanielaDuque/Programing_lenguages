@@ -17,13 +17,13 @@ import org.antlr.v4.runtime.tree.*;
 import java.io.File;
 import java.io.PrintStream;
 
-public class Translate {
+public class Main {
     public static void main(String[] args) throws Exception {
         try {
             //Instantiating the File class
-            File file = new File("./outputs/Translation.java");
+            //File file = new File("./outputs/Translation.java");
             //Instantiating the PrintStream class
-            PrintStream stream = new PrintStream(file);
+            //PrintStream stream = new PrintStream(file);
             //System.setOut(stream);
             // crear un analizador léxico que se alimenta a partir de la entrada (archivo  o consola)
             Bcc_grammarLexer lexer;
